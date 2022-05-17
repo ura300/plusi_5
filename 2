@@ -1,42 +1,39 @@
-#include <bits/stdc++.h>
-using namespace std;
-
-
-int find_terms(int arr[], int res, int k)
-{
-    unordered_map<int, int> m;
-
-    for (int i = 0; i < res; i++)
-        m[arr[i]]++;
-
-    int twice_count = 0;
-
-    for (int i = 0; i < res; i++)
-    {
-        twice_count += m[k-arr[i]];
-
-        if (k - arr[i] == arr[i])
-            twice_count--;
+int find_terms(int arr[],int k,int res[]){
+    for(int i=0; i < sizeof(arr); i++){
+        for(int j= i+1;j < sizeof(arr); j++){
+            if(arr[i]+arr[j]== k) {
+                res[0] = arr[i];
+                res[1] = arr[j];
+                return 0;
+            }
+        }
     }
-
-    return twice_count/2;
+    return -1;
 }
 
-int main()
-{int n;
-    cout << "Size array:\n";
-    cin >> n;
+int find_terms_hash(int arr[],int k,int res[]){
+    int hash[sizeof(arr)];
+    for(int i=0; i < sizeof(arr); i++){
+        hash[i]=arr[i];
+        for(int j= 0;j <= i; j++){
+            hash[j]=arr[j];
+            if(hash[i]+hash[j]== k) {
+                res[0] = hash[j];
+                res[1] = hash[i];
+                return 0;
+            }
+        }
+    }
+    return -1;
+}
 
-    int arr[n];
-    cout << "Array:\n";
-    for (int i = 0; i < n; i++)
-        cin >> arr[i];
 
-    int k;
-    cout << "Summ pairs:\n";
-    cin >> k;
 
-    int res = sizeof(arr)/sizeof(arr[0]);
-    cout << "Count of pairs is "<< find_terms(arr, res, k);
+int main() {
+    int res[2];
+    int arr[] = {1,2,3,5,7};
+    find_terms(arr,9,res);
+    if(res[0]==res[1]) cout<<"no pairs";
+    else cout<<res[0]<<" "<<res[1];
     return 0;
 }
